@@ -1,0 +1,216 @@
+* { box-sizing: border-box; }
+:root {
+  --SBSblue: #0a113f;
+  --SBSgreenblue: #007f78;
+  --SBSgreen: #00a651;
+  --lwhite: #a8b3ba;
+  --card-bg: #f8fafd;
+}
+body {
+  margin: 0;
+  font-family: Cambria, "Times New Roman", Times, serif;
+  font-size: 16px;
+  line-height: 1.45;
+  background: linear-gradient(135deg, #070f35, #0a113f 45%, #0d1b2e);
+  color: #0c1a2a;
+}
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.card {
+  width: min(760px, 100%);
+  background: var(--card-bg);
+  border-radius: 16px;
+  border-top: 4px solid var(--SBSgreenblue);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.34);
+  padding: 28px;
+}
+.card.wide { width: min(1100px, 100%); }
+h1 { margin: 0 0 6px 0; color: var(--SBSblue); }
+.subtitle { margin-top: 0; color: #415470; }
+.pill {
+  display: inline-block;
+  margin: 8px 0 12px 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #e7f6f4;
+  color: #045c58;
+  font-weight: 600;
+}
+.question {
+  font-weight: 600;
+  margin: 10px 0 8px;
+  color: #10223a;
+}
+.binary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.choice {
+  border: 1px solid #ccd9e8;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+textarea {
+  width: 100%;
+  border: 1px solid #c4d4e6;
+  border-radius: 12px;
+  padding: 12px;
+  resize: vertical;
+  font-size: 16px;
+  font-family: inherit;
+}
+button, .link-btn {
+  margin-top: 14px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: var(--SBSgreenblue);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.top-grid { align-items: stretch; }
+.panel {
+  border: 1px solid #d8e1ec;
+  border-radius: 14px;
+  padding: 14px;
+  background: #ffffff;
+}
+.top-grid .panel {
+  height: 100%;
+}
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+}
+.controls-panel .control-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+.btn-analyze { background: #00a651; }
+.btn-refresh { background: #007f78; }
+.btn-reset { background: #0f5f73; }
+.btn-prompt { background: #0a113f; }
+.qr {
+  width: 220px;
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+  padding: 8px;
+  background: white;
+}
+.tiny { color: #5d718d; font-size: 16px; }
+.controls-panel #statusText { margin-top: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #dde5ee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+th, td {
+  text-align: left;
+  border-bottom: 1px solid #edf1f6;
+  padding: 10px 12px;
+  vertical-align: top;
+}
+th {
+  background: #f4f8fc;
+  color: #0a113f;
+  font-weight: 700;
+}
+tbody tr:nth-child(even) {
+  background: #fbfdff;
+}
+tbody tr:hover {
+  background: #f0f6fb;
+}
+code {
+  background: #ebf2fa;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 15, 53, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 99;
+}
+.modal.hidden { display: none; }
+.modal-card {
+  width: min(920px, 100%);
+  max-height: 80vh;
+  overflow: auto;
+  background: #ffffff;
+  border-radius: 14px;
+  border-top: 4px solid var(--SBSgreenblue);
+  padding: 16px;
+}
+pre {
+  white-space: pre-wrap;
+  background: #f4f8fc;
+  border: 1px solid #dde5ee;
+  border-radius: 10px;
+  padding: 12px;
+}
+.response-group {
+  border: 1px solid #dde5ee;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: #ffffff;
+}
+.response-group summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 10px 12px;
+  font-weight: 700;
+  color: #0a113f;
+  background: #f4f8fc;
+  border-bottom: 1px solid #edf1f6;
+}
+.response-group summary::-webkit-details-marker {
+  display: none;
+}
+.response-group summary::after {
+  content: " +";
+  float: right;
+  color: #30517a;
+}
+.response-group[open] summary::after {
+  content: " -";
+}
+.word-cloud-img {
+  width: 100%;
+  min-height: 180px;
+  border: 1px solid #dde5ee;
+  border-radius: 10px;
+  background: #ffffff;
+  display: block;
+}
+@media (max-width: 820px) {
+  .grid, .binary-row { grid-template-columns: 1fr; }
+}

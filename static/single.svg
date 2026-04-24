@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#e9f1ff"/>
+      <stop offset="100%" stop-color="#f4ffef"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="320" fill="url(#g)"/>
+  <circle cx="260" cy="160" r="90" fill="#fff" stroke="#bfd2f8" stroke-width="10"/>
+  <text x="260" y="172" text-anchor="middle" font-size="70" font-family="Arial" fill="#2d4ea8">£</text>
+  <rect x="460" y="100" width="300" height="120" rx="16" fill="#ffffff" stroke="#cfe0ff" stroke-width="6"/>
+  <text x="610" y="150" text-anchor="middle" font-size="36" font-family="Arial" fill="#1f3f8d">+200 / -100</text>
+  <text x="610" y="190" text-anchor="middle" font-size="26" font-family="Arial" fill="#5f739f">Single gamble</text>
+  <text x="940" y="165" text-anchor="middle" font-size="56" font-family="Arial" fill="#2f6a3f">50% / 50%</text>
+</svg>

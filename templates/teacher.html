@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gamble Choices</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="page">
+    <div class="card wide">
+      <h1>Gamble Choices</h1>
+      <div class="grid top-grid">
+        <div class="panel">
+          <h3>Student Entry QR Code</h3>
+          <img src="/api/qr" alt="Survey QR Code" class="qr">
+          <p class="tiny">Survey URL: <code>{{ public_base_url }}/survey</code></p>
+          <a class="link-btn" href="/api/qr" download="survey-qr.png">Download QR PNG</a>
+        </div>
+        <div class="panel controls-panel">
+          <h3>Controls</h3>
+          <p>Total responses: <strong id="totalCount">0</strong></p>
+          <button id="analyzeBtn" class="control-btn btn-analyze">Analyze new text responses</button>
+          <button id="refreshBtn" class="control-btn btn-refresh">Refresh now</button>
+          <button id="resetBtn" class="control-btn btn-reset">Reset all data</button>
+          <button id="promptBtn" class="control-btn btn-prompt">View classification prompt</button>
+          <p id="statusText" class="tiny"></p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <h3>Treatment Response Split</h3>
+          <canvas id="treatmentChart" height="180"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Reason Labels</h3>
+          <canvas id="reasonChart" height="180"></canvas>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Word Cloud</h3>
+        <div class="grid">
+        <div class="panel">
+          <h3>T1 Single Trails</h3>
+          <img id="wordCloudT1" class="word-cloud-img" src="/api/wordcloud_image/T1" alt="T1 word cloud">
+        </div>
+        <div class="panel">
+          <h3>T2 Repeated Trails</h3>
+          <img id="wordCloudT2" class="word-cloud-img" src="/api/wordcloud_image/T2" alt="T2 word cloud">
+        </div>
+      </div>
+      </div>
+
+      <div class="panel">
+        <h3>Latest Responses (Grouped)</h3>
+        <div id="groupedResponses"></div>
+      </div>
+    </div>
+  </div>
+  <div id="promptModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>OpenAI Classification Prompt</h3>
+      <pre id="promptContent"></pre>
+      <button id="closePromptBtn">Close</button>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

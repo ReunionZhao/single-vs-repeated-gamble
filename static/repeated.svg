@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320">
+  <defs>
+    <linearGradient id="g2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#f3f0ff"/>
+      <stop offset="100%" stop-color="#eefbff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="320" fill="url(#g2)"/>
+  <rect x="120" y="85" width="280" height="150" rx="14" fill="#fff" stroke="#d8cdfd" stroke-width="6"/>
+  <text x="260" y="150" text-anchor="middle" font-size="34" font-family="Arial" fill="#4d3a96">10 rounds</text>
+  <text x="260" y="190" text-anchor="middle" font-size="28" font-family="Arial" fill="#7162b3">Repeated play</text>
+  <path d="M470 160 C560 60, 730 60, 820 160" stroke="#5f7ad6" stroke-width="8" fill="none"/>
+  <polygon points="820,160 794,148 798,172" fill="#5f7ad6"/>
+  <rect x="860" y="90" width="230" height="140" rx="14" fill="#fff" stroke="#cce4f6" stroke-width="6"/>
+  <text x="975" y="148" text-anchor="middle" font-size="34" font-family="Arial" fill="#1d5882">EV logic</text>
+  <text x="975" y="188" text-anchor="middle" font-size="26" font-family="Arial" fill="#4c7697">Avg gains matter</text>
+</svg>
