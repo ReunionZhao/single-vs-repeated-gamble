@@ -3,6 +3,7 @@ const groupedResponses = document.getElementById("groupedResponses");
 const statusText = document.getElementById("statusText");
 const promptModal = document.getElementById("promptModal");
 const promptContent = document.getElementById("promptContent");
+const questionsModal = document.getElementById("questionsModal");
 const wordCloudT1 = document.getElementById("wordCloudT1");
 const wordCloudT2 = document.getElementById("wordCloudT2");
 
@@ -243,13 +244,26 @@ function closePrompt() {
   promptModal.classList.add("hidden");
 }
 
+function showQuestions() {
+  questionsModal.classList.remove("hidden");
+}
+
+function closeQuestions() {
+  questionsModal.classList.add("hidden");
+}
+
 document.getElementById("analyzeBtn").addEventListener("click", analyzeNewTexts);
 document.getElementById("refreshBtn").addEventListener("click", refreshData);
 document.getElementById("resetBtn").addEventListener("click", resetData);
+document.getElementById("questionsBtn").addEventListener("click", showQuestions);
 document.getElementById("promptBtn").addEventListener("click", showPrompt);
 document.getElementById("closePromptBtn").addEventListener("click", closePrompt);
+document.getElementById("closeQuestionsBtn").addEventListener("click", closeQuestions);
 promptModal.addEventListener("click", (e) => {
   if (e.target === promptModal) closePrompt();
+});
+questionsModal.addEventListener("click", (e) => {
+  if (e.target === questionsModal) closeQuestions();
 });
 
 initCharts();
