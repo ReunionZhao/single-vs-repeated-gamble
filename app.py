@@ -88,7 +88,26 @@ init_db()
 
 
 def assign_treatment():
-    return "T1" if random.random() < 0.5 else "T2"
+    try:
+        with db_conn() as conn:
+            rows = conn.execute(
+                """
+                SELECT treatment, COUNT(*) as c
+                FROM responses
+                GROUP BY treatment
+                """
+            ).fetchall()
+        counts = {"T1": 0, "T2": 0}
+        for row in rows:
+            counts[row["treatment"]] = row["c"]
+
+        if counts["T1"] < counts["T2"]:
+            return "T1"
+        if counts["T2"] < counts["T1"]:
+            return "T2"
+        return "T1" if random.random() < 0.5 else "T2"
+    except Exception:
+        return "T1" if random.random() < 0.5 else "T2"
 
 
 def get_or_set_respondent():
