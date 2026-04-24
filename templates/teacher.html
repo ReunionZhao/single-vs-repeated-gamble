@@ -24,6 +24,7 @@
           <button id="analyzeBtn" class="control-btn btn-analyze">Analyze new text responses</button>
           <button id="refreshBtn" class="control-btn btn-refresh">Refresh now</button>
           <button id="resetBtn" class="control-btn btn-reset">Reset all data</button>
+          <button id="questionsBtn" class="control-btn btn-questions">View Questions</button>
           <button id="promptBtn" class="control-btn btn-prompt">View classification prompt</button>
           <p id="statusText" class="tiny"></p>
         </div>
@@ -65,6 +66,24 @@
       <h3>OpenAI Classification Prompt</h3>
       <pre id="promptContent"></pre>
       <button id="closePromptBtn">Close</button>
+    </div>
+  </div>
+  <div id="questionsModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>Treatment Questions</h3>
+      <div class="questions-grid">
+        <div class="q-card">
+          <h4>T1 - Single Trial</h4>
+          <p><strong>Q1.</strong> Would you accept to play a gamble that pays £200 with 50% chance and a loss of £100 with 50% chance?</p>
+          <p><strong>Q2.</strong> Could you briefly describe the reasons for your choice?</p>
+        </div>
+        <div class="q-card">
+          <h4>T2 - Repeated Trials</h4>
+          <p><strong>Q1.</strong> Consider a gamble that pays £200 with 50% chance and a loss of £100 with 50% chance. Would you accept to play this gamble 10 times?</p>
+          <p><strong>Q2.</strong> Could you briefly describe the reasons for your choice?</p>
+        </div>
+      </div>
+      <button id="closeQuestionsBtn">Close</button>
     </div>
   </div>
   <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
