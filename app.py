@@ -5,6 +5,7 @@ import random
 import re
 import sqlite3
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
 import qrcode
@@ -473,24 +474,36 @@ def api_analyze_texts():
             """
         ).fetchall()
 
-        analyzed = 0
-        for row in rows:
+        if not rows:
+            return jsonify({"ok": True, "analyzed_count": 0})
+
+        worker_count = min(256, len(rows))
+        updates = []
+
+        def classify_row(row):
             result = classify_with_openai(row["treatment"], row["q1_choice"], row["q2_text"])
-            conn.execute(
-                """
-                UPDATE responses
-                SET reason_label = ?, analysis_confidence = ?, analysis_rationale = ?, analysis_source = ?
-                WHERE id = ?
-                """,
-                (
-                    result["label"],
-                    result["confidence"],
-                    result["rationale"],
-                    result["source"],
-                    row["id"],
-                ),
+            return (
+                result["label"],
+                result["confidence"],
+                result["rationale"],
+                result["source"],
+                row["id"],
             )
-            analyzed += 1
+
+        with ThreadPoolExecutor(max_workers=worker_count) as executor:
+            futures = [executor.submit(classify_row, row) for row in rows]
+            for fut in as_completed(futures):
+                updates.append(fut.result())
+
+        conn.executemany(
+            """
+            UPDATE responses
+            SET reason_label = ?, analysis_confidence = ?, analysis_rationale = ?, analysis_source = ?
+            WHERE id = ?
+            """,
+            updates,
+        )
+        analyzed = len(updates)
         conn.commit()
 
     return jsonify({"ok": True, "analyzed_count": analyzed})
