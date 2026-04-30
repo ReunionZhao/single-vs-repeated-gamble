@@ -18,7 +18,7 @@ const bubbleLabelPlugin = {
     ctx.save();
     ctx.font = "12px Cambria, Times New Roman, Times, serif";
     ctx.fillStyle = "#0a113f";
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     chart.data.datasets.forEach((dataset, di) => {
       const meta = chart.getDatasetMeta(di);
@@ -26,7 +26,7 @@ const bubbleLabelPlugin = {
         const raw = dataset.data[idx];
         if (!raw) return;
         const txt = `${(raw.share * 100).toFixed(1)}%`;
-        ctx.fillText(txt, point.x + raw.r + 6, point.y - raw.r - 2);
+        ctx.fillText(txt, point.x, point.y - raw.r - 8);
       });
     });
     ctx.restore();
@@ -119,12 +119,12 @@ function initCharts() {
       labels: ["Accept", "Reject"],
       datasets: [
         {
-          label: "T1",
+          label: "T1 Single Trails",
           data: [0, 0],
           backgroundColor: "#007f78"
         },
         {
-          label: "T2",
+          label: "T2 Repeated Trails",
           data: [0, 0],
           backgroundColor: "#00a651"
         }
@@ -161,12 +161,12 @@ function initCharts() {
       labels: ["Loss Focus", "Expected Value Focus", "Mixed or Unclear"],
       datasets: [
         {
-          label: "T1",
+          label: "T1 Single Trails",
           data: [0, 0, 0],
           backgroundColor: "#007f78"
         },
         {
-          label: "T2",
+          label: "T2 Repeated Trails",
           data: [0, 0, 0],
           backgroundColor: "#00a651"
         }
@@ -201,27 +201,27 @@ function initCharts() {
     type: "bubble",
     data: {
       datasets: [
-        { label: "T1", data: [], backgroundColor: "rgba(0,127,120,0.6)", borderColor: "#007f78" },
-        { label: "T2", data: [], backgroundColor: "rgba(0,166,166,0.6)", borderColor: "#00a6a6" },
+        { label: "T1 Single Trails", data: [], backgroundColor: "rgba(0,127,120,0.6)", borderColor: "#007f78" },
+        { label: "T2 Repeated Trails", data: [], backgroundColor: "rgba(0,166,166,0.6)", borderColor: "#00a6a6" },
       ]
     },
     options: {
       responsive: true,
       scales: {
         x: {
-          min: -0.2,
-          max: 1.2,
+          min: -0.1,
+          max: 1.1,
           ticks: {
             stepSize: 1,
             callback: (v) => (v === 0 ? "Loss Focus" : v === 1 ? "Expected Value Focus" : "")
           }
         },
         y: {
-          min: -0.2,
-          max: 1.2,
+          min: -0.1,
+          max: 1.1,
           ticks: {
             stepSize: 1,
-            callback: (v) => (v === 0 ? "Not Accept (Choice)" : v === 1 ? "Accept (Choice)" : "")
+            callback: (v) => (v === 0 ? "Not Accept" : v === 1 ? "Accept" : "")
           }
         }
       },
@@ -281,18 +281,18 @@ async function refreshData() {
 
   const t1 = data.reason_decision_share.T1;
   const t2 = data.reason_decision_share.T2;
-  const mkR = (share) => 10 + share * 52;
+  const mkR = (share) => 14 + share * 62;
   reasonDecisionChart.data.datasets[0].data = [
-    { x: -0.06, y: 1.06, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
-    { x: -0.06, y: -0.06, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
-    { x: 0.94, y: 1.06, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
-    { x: 0.94, y: -0.06, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
+    { x: -0.03, y: 1.03, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
+    { x: -0.03, y: 0.03, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
+    { x: 0.97, y: 1.03, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
+    { x: 0.97, y: 0.03, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
   ];
   reasonDecisionChart.data.datasets[1].data = [
-    { x: 0.06, y: 0.94, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
-    { x: 0.06, y: 0.06, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
-    { x: 1.06, y: 0.94, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
-    { x: 1.06, y: 0.06, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
+    { x: 0.03, y: 0.97, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
+    { x: 0.03, y: -0.03, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
+    { x: 1.03, y: 0.97, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
+    { x: 1.03, y: -0.03, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
   ];
   reasonDecisionChart.update();
 
