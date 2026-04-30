@@ -37,6 +37,24 @@ const bubbleLabelPlugin = {
   },
 };
 Chart.register(bubbleLabelPlugin);
+const squarePlotAreaPlugin = {
+  id: "squarePlotAreaPlugin",
+  afterLayout(chart) {
+    if (chart.canvas.id !== "reasonDecisionChart") return;
+    const area = chart.chartArea;
+    if (!area) return;
+    const w = area.right - area.left;
+    const h = area.bottom - area.top;
+    const size = Math.min(w, h);
+    const cx = (area.left + area.right) / 2;
+    const cy = (area.top + area.bottom) / 2;
+    chart.chartArea.left = cx - size / 2;
+    chart.chartArea.right = cx + size / 2;
+    chart.chartArea.top = cy - size / 2;
+    chart.chartArea.bottom = cy + size / 2;
+  },
+};
+Chart.register(squarePlotAreaPlugin);
 
 Chart.defaults.font.family = "Cambria, Times New Roman, Times, serif";
 Chart.defaults.color = "#0a113f";
@@ -211,16 +229,16 @@ function initCharts() {
       aspectRatio: 1,
       scales: {
         x: {
-          min: -0.1,
-          max: 1.1,
+          min: -0.5,
+          max: 1.5,
           ticks: {
             stepSize: 1,
             callback: (v) => (v === 0 ? "Loss Focus" : v === 1 ? "Expected Value Focus" : "")
           }
         },
         y: {
-          min: -0.1,
-          max: 1.1,
+          min: -0.5,
+          max: 1.5,
           ticks: {
             stepSize: 1,
             callback: (v) => (v === 0 ? "Not Accept" : v === 1 ? "Accept" : "")
@@ -285,16 +303,16 @@ async function refreshData() {
   const t2 = data.reason_decision_share.T2;
   const mkR = (share) => 14 + share * 62;
   reasonDecisionChart.data.datasets[0].data = [
-    { x: -0.03, y: 1.03, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
-    { x: -0.03, y: 0.03, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
-    { x: 0.97, y: 1.03, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
-    { x: 0.97, y: 0.03, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
+    { x: 0, y: 1, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
+    { x: 0, y: 0, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
+    { x: 1, y: 1, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
+    { x: 1, y: 0, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
   ];
   reasonDecisionChart.data.datasets[1].data = [
-    { x: 0.03, y: 0.97, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
-    { x: 0.03, y: -0.03, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
-    { x: 1.03, y: 0.97, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
-    { x: 1.03, y: -0.03, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
+    { x: 0, y: 1, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
+    { x: 0, y: 0, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
+    { x: 1, y: 1, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
+    { x: 1, y: 0, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
   ];
   reasonDecisionChart.update();
 
