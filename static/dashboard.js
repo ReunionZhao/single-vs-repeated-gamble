@@ -18,7 +18,7 @@ const bubbleLabelPlugin = {
     ctx.save();
     ctx.font = "12px Cambria, Times New Roman, Times, serif";
     ctx.fillStyle = "#0a113f";
-    ctx.textAlign = "center";
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     chart.data.datasets.forEach((dataset, di) => {
       const meta = chart.getDatasetMeta(di);
@@ -26,10 +26,14 @@ const bubbleLabelPlugin = {
         const raw = dataset.data[idx];
         if (!raw) return;
         const txt = `${(raw.share * 100).toFixed(1)}%`;
-        ctx.fillText(txt, point.x, point.y);
+        ctx.fillText(txt, point.x + raw.r + 6, point.y - raw.r - 2);
       });
     });
     ctx.restore();
+  },
+  afterDraw(chart) {
+    if (chart.canvas.id !== "reasonDecisionChart") return;
+    // Keep only axis labels for interpretation.
   },
 };
 Chart.register(bubbleLabelPlugin);
@@ -205,19 +209,19 @@ function initCharts() {
       responsive: true,
       scales: {
         x: {
-          min: -0.5,
-          max: 1.5,
+          min: -0.2,
+          max: 1.2,
           ticks: {
             stepSize: 1,
             callback: (v) => (v === 0 ? "Loss Focus" : v === 1 ? "Expected Value Focus" : "")
           }
         },
         y: {
-          min: -0.5,
-          max: 1.5,
+          min: -0.2,
+          max: 1.2,
           ticks: {
             stepSize: 1,
-            callback: (v) => (v === 0 ? "Not Accept" : v === 1 ? "Accept" : "")
+            callback: (v) => (v === 0 ? "Not Accept (Choice)" : v === 1 ? "Accept (Choice)" : "")
           }
         }
       },
@@ -277,7 +281,7 @@ async function refreshData() {
 
   const t1 = data.reason_decision_share.T1;
   const t2 = data.reason_decision_share.T2;
-  const mkR = (share) => 6 + share * 36;
+  const mkR = (share) => 10 + share * 52;
   reasonDecisionChart.data.datasets[0].data = [
     { x: -0.06, y: 1.06, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
     { x: -0.06, y: -0.06, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
