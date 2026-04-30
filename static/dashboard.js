@@ -9,6 +9,7 @@ const wordCloudT2 = document.getElementById("wordCloudT2");
 
 let treatmentChart;
 let reasonChart;
+let reasonDecisionChart;
 
 Chart.defaults.font.family = "Cambria, Times New Roman, Times, serif";
 Chart.defaults.color = "#0a113f";
@@ -83,6 +84,7 @@ function refreshWordClouds() {
 function initCharts() {
   const tctx = document.getElementById("treatmentChart");
   const rctx = document.getElementById("reasonChart");
+  const rdctx = document.getElementById("reasonDecisionChart");
 
   treatmentChart = new Chart(tctx, {
     type: "bar",
@@ -167,6 +169,47 @@ function initCharts() {
       }
     }
   });
+
+  reasonDecisionChart = new Chart(rdctx, {
+    type: "bubble",
+    data: {
+      datasets: [
+        { label: "T1", data: [], backgroundColor: "rgba(0,127,120,0.6)", borderColor: "#007f78" },
+        { label: "T2", data: [], backgroundColor: "rgba(0,166,166,0.6)", borderColor: "#00a6a6" },
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          min: -0.5,
+          max: 1.5,
+          ticks: {
+            stepSize: 1,
+            callback: (v) => (v === 0 ? "Loss Focus" : v === 1 ? "Expected Value Focus" : "")
+          }
+        },
+        y: {
+          min: -0.5,
+          max: 1.5,
+          ticks: {
+            stepSize: 1,
+            callback: (v) => (v === 0 ? "Not Accept" : v === 1 ? "Accept" : "")
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const sharePct = (ctx.raw.share * 100).toFixed(1);
+              return `${ctx.dataset.label}: ${sharePct}%`;
+            }
+          }
+        }
+      }
+    }
+  });
 }
 
 async function refreshData() {
@@ -208,6 +251,23 @@ async function refreshData() {
     toPercent(data.reason_labels_by_treatment.T2.mixed_or_other, t2ReasonTotal)
   ];
   reasonChart.update();
+
+  const t1 = data.reason_decision_share.T1;
+  const t2 = data.reason_decision_share.T2;
+  const mkR = (share) => 8 + share * 60;
+  reasonDecisionChart.data.datasets[0].data = [
+    { x: -0.06, y: 1.06, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
+    { x: -0.06, y: -0.06, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
+    { x: 0.94, y: 1.06, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
+    { x: 0.94, y: -0.06, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
+  ];
+  reasonDecisionChart.data.datasets[1].data = [
+    { x: 0.06, y: 0.94, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
+    { x: 0.06, y: 0.06, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
+    { x: 1.06, y: 0.94, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
+    { x: 1.06, y: 0.06, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
+  ];
+  reasonDecisionChart.update();
 
   renderGroupedResponses(data.latest_responses);
   refreshWordClouds();

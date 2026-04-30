@@ -249,6 +249,15 @@ def fetch_stats():
             GROUP BY treatment, COALESCE(reason_label, 'unclassified')
             """
         ).fetchall()
+        reason_decision_rows = conn.execute(
+            """
+            SELECT treatment, reason_label, q1_choice, COUNT(*) as c
+            FROM responses
+            WHERE reason_label IN ('loss_focus', 'expected_value_focus')
+              AND q1_choice IN ('accept', 'reject')
+            GROUP BY treatment, reason_label, q1_choice
+            """
+        ).fetchall()
 
         latest = conn.execute(
             """
@@ -292,11 +301,31 @@ def fetch_stats():
     for r in reason_treatment_rows:
         reason_by_treatment[r["treatment"]][r["label"]] = r["c"]
 
+    reason_decision_share = {
+        "T1": {
+            "loss_focus": {"accept": 0.0, "reject": 0.0},
+            "expected_value_focus": {"accept": 0.0, "reject": 0.0},
+        },
+        "T2": {
+            "loss_focus": {"accept": 0.0, "reject": 0.0},
+            "expected_value_focus": {"accept": 0.0, "reject": 0.0},
+        },
+    }
+    totals = {
+        "T1": treatment_counts["T1"]["accept"] + treatment_counts["T1"]["reject"],
+        "T2": treatment_counts["T2"]["accept"] + treatment_counts["T2"]["reject"],
+    }
+    for r in reason_decision_rows:
+        t = r["treatment"]
+        denom = totals[t] if totals[t] else 1
+        reason_decision_share[t][r["reason_label"]][r["q1_choice"]] = r["c"] / denom
+
     return {
         "total": total,
         "treatments": treatment_counts,
         "reason_labels": reason_counts,
         "reason_labels_by_treatment": reason_by_treatment,
+        "reason_decision_share": reason_decision_share,
         "latest_responses": [dict(x) for x in latest],
     }
 
