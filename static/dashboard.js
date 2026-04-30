@@ -129,16 +129,16 @@ function initCharts() {
   reasonChart = new Chart(rctx, {
     type: "bar",
     data: {
-      labels: ["Loss Focus", "Expected Value Focus", "Mixed/Other", "Unclassified"],
+      labels: ["Loss Focus", "Expected Value Focus", "Mixed or Unclear"],
       datasets: [
         {
           label: "T1",
-          data: [0, 0, 0, 0],
+          data: [0, 0, 0],
           backgroundColor: "#007f78"
         },
         {
           label: "T2",
-          data: [0, 0, 0, 0],
+          data: [0, 0, 0],
           backgroundColor: "#00a651"
         }
       ]
@@ -191,25 +191,21 @@ async function refreshData() {
   const t1ReasonTotal =
     data.reason_labels_by_treatment.T1.loss_focus +
     data.reason_labels_by_treatment.T1.expected_value_focus +
-    data.reason_labels_by_treatment.T1.mixed_or_other +
-    data.reason_labels_by_treatment.T1.unclassified;
+    data.reason_labels_by_treatment.T1.mixed_or_other;
   const t2ReasonTotal =
     data.reason_labels_by_treatment.T2.loss_focus +
     data.reason_labels_by_treatment.T2.expected_value_focus +
-    data.reason_labels_by_treatment.T2.mixed_or_other +
-    data.reason_labels_by_treatment.T2.unclassified;
+    data.reason_labels_by_treatment.T2.mixed_or_other;
 
   reasonChart.data.datasets[0].data = [
     toPercent(data.reason_labels_by_treatment.T1.loss_focus, t1ReasonTotal),
     toPercent(data.reason_labels_by_treatment.T1.expected_value_focus, t1ReasonTotal),
-    toPercent(data.reason_labels_by_treatment.T1.mixed_or_other, t1ReasonTotal),
-    toPercent(data.reason_labels_by_treatment.T1.unclassified, t1ReasonTotal)
+    toPercent(data.reason_labels_by_treatment.T1.mixed_or_other, t1ReasonTotal)
   ];
   reasonChart.data.datasets[1].data = [
     toPercent(data.reason_labels_by_treatment.T2.loss_focus, t2ReasonTotal),
     toPercent(data.reason_labels_by_treatment.T2.expected_value_focus, t2ReasonTotal),
-    toPercent(data.reason_labels_by_treatment.T2.mixed_or_other, t2ReasonTotal),
-    toPercent(data.reason_labels_by_treatment.T2.unclassified, t2ReasonTotal)
+    toPercent(data.reason_labels_by_treatment.T2.mixed_or_other, t2ReasonTotal)
   ];
   reasonChart.update();
 
