@@ -10,6 +10,29 @@ const wordCloudT2 = document.getElementById("wordCloudT2");
 let treatmentChart;
 let reasonChart;
 let reasonDecisionChart;
+const bubbleLabelPlugin = {
+  id: "bubbleLabelPlugin",
+  afterDatasetsDraw(chart) {
+    if (chart.canvas.id !== "reasonDecisionChart") return;
+    const { ctx } = chart;
+    ctx.save();
+    ctx.font = "12px Cambria, Times New Roman, Times, serif";
+    ctx.fillStyle = "#0a113f";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    chart.data.datasets.forEach((dataset, di) => {
+      const meta = chart.getDatasetMeta(di);
+      meta.data.forEach((point, idx) => {
+        const raw = dataset.data[idx];
+        if (!raw) return;
+        const txt = `${(raw.share * 100).toFixed(1)}%`;
+        ctx.fillText(txt, point.x, point.y);
+      });
+    });
+    ctx.restore();
+  },
+};
+Chart.register(bubbleLabelPlugin);
 
 Chart.defaults.font.family = "Cambria, Times New Roman, Times, serif";
 Chart.defaults.color = "#0a113f";
@@ -254,7 +277,7 @@ async function refreshData() {
 
   const t1 = data.reason_decision_share.T1;
   const t2 = data.reason_decision_share.T2;
-  const mkR = (share) => 8 + share * 60;
+  const mkR = (share) => 6 + share * 36;
   reasonDecisionChart.data.datasets[0].data = [
     { x: -0.06, y: 1.06, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
     { x: -0.06, y: -0.06, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
