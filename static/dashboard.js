@@ -33,7 +33,26 @@ const bubbleLabelPlugin = {
   },
   afterDraw(chart) {
     if (chart.canvas.id !== "reasonDecisionChart") return;
-    // Keep only axis labels for interpretation.
+    const { ctx, scales } = chart;
+    const xScale = scales.x;
+    const yScale = scales.y;
+    const labels = [
+      { x: 0, y: 1, text: "Loss + Accept" },
+      { x: 0, y: 0, text: "Loss + Not Accept" },
+      { x: 1, y: 1, text: "EV + Accept" },
+      { x: 1, y: 0, text: "EV + Not Accept" },
+    ];
+    ctx.save();
+    ctx.font = "11px Cambria, Times New Roman, Times, serif";
+    ctx.fillStyle = "#30517a";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    labels.forEach((item) => {
+      const px = xScale.getPixelForValue(item.x);
+      const py = yScale.getPixelForValue(item.y);
+      ctx.fillText(item.text, px, py + 28);
+    });
+    ctx.restore();
   },
 };
 Chart.register(bubbleLabelPlugin);
@@ -301,18 +320,19 @@ async function refreshData() {
 
   const t1 = data.reason_decision_share.T1;
   const t2 = data.reason_decision_share.T2;
-  const mkR = (share) => 14 + share * 62;
+  const mkR = (share) => 10 + share * 48;
+  const offset = 0.12;
   reasonDecisionChart.data.datasets[0].data = [
-    { x: 0, y: 1, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
-    { x: 0, y: 0, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
-    { x: 1, y: 1, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
-    { x: 1, y: 0, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
+    { x: 0 - offset, y: 1 + offset, r: mkR(t1.loss_focus.accept), share: t1.loss_focus.accept },
+    { x: 0 - offset, y: 0 + offset, r: mkR(t1.loss_focus.reject), share: t1.loss_focus.reject },
+    { x: 1 - offset, y: 1 + offset, r: mkR(t1.expected_value_focus.accept), share: t1.expected_value_focus.accept },
+    { x: 1 - offset, y: 0 + offset, r: mkR(t1.expected_value_focus.reject), share: t1.expected_value_focus.reject },
   ];
   reasonDecisionChart.data.datasets[1].data = [
-    { x: 0, y: 1, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
-    { x: 0, y: 0, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
-    { x: 1, y: 1, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
-    { x: 1, y: 0, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
+    { x: 0 + offset, y: 1 - offset, r: mkR(t2.loss_focus.accept), share: t2.loss_focus.accept },
+    { x: 0 + offset, y: 0 - offset, r: mkR(t2.loss_focus.reject), share: t2.loss_focus.reject },
+    { x: 1 + offset, y: 1 - offset, r: mkR(t2.expected_value_focus.accept), share: t2.expected_value_focus.accept },
+    { x: 1 + offset, y: 0 - offset, r: mkR(t2.expected_value_focus.reject), share: t2.expected_value_focus.reject },
   ];
   reasonDecisionChart.update();
 
