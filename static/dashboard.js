@@ -47,10 +47,15 @@ const bubbleLabelPlugin = {
     ctx.fillStyle = "#30517a";
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
+    const pad = 6;
     labels.forEach((item) => {
-      const px = xScale.getPixelForValue(item.x);
-      const py = yScale.getPixelForValue(item.y);
-      ctx.fillText(item.text, px - 62, py - 44);
+      const x1 = xScale.getPixelForValue(item.x - 0.5);
+      const x2 = xScale.getPixelForValue(item.x + 0.5);
+      const y1 = yScale.getPixelForValue(item.y - 0.5);
+      const y2 = yScale.getPixelForValue(item.y + 0.5);
+      const left = Math.min(x1, x2);
+      const top = Math.min(y1, y2);
+      ctx.fillText(item.text, left + pad, top + pad);
     });
     ctx.restore();
   },
