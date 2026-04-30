@@ -43,14 +43,14 @@ const bubbleLabelPlugin = {
       { x: 1, y: 0, text: "EV + Not Accept" },
     ];
     ctx.save();
-    ctx.font = "11px Cambria, Times New Roman, Times, serif";
+    ctx.font = "bold 14px Cambria, Times New Roman, Times, serif";
     ctx.fillStyle = "#30517a";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
     labels.forEach((item) => {
       const px = xScale.getPixelForValue(item.x);
       const py = yScale.getPixelForValue(item.y);
-      ctx.fillText(item.text, px, py + 28);
+      ctx.fillText(item.text, px - 62, py - 44);
     });
     ctx.restore();
   },

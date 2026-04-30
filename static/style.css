@@ -232,7 +232,11 @@ pre {
   background: #ffffff;
   display: block;
 }
+.bubble-chart-wrap {
+  width: 33%;
+}
 @media (max-width: 820px) {
   .grid, .binary-row { grid-template-columns: 1fr; }
   .questions-grid { grid-template-columns: 1fr; }
+  .bubble-chart-wrap { width: 100%; }
 }
