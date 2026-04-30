@@ -233,7 +233,8 @@ pre {
   display: block;
 }
 .bubble-chart-wrap {
-  width: 33%;
+  width: 66%;
+  margin: 0 auto;
 }
 @media (max-width: 820px) {
   .grid, .binary-row { grid-template-columns: 1fr; }

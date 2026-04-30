@@ -39,8 +39,8 @@ const bubbleLabelPlugin = {
     const labels = [
       { x: 0, y: 1, text: "Loss + Accept" },
       { x: 0, y: 0, text: "Loss + Not Accept" },
-      { x: 1, y: 1, text: "EV + Accept" },
-      { x: 1, y: 0, text: "EV + Not Accept" },
+      { x: 1, y: 1, text: "Expected Value + Accept" },
+      { x: 1, y: 0, text: "Expected Value + Not Accept" },
     ];
     ctx.save();
     ctx.font = "bold 14px Cambria, Times New Roman, Times, serif";
